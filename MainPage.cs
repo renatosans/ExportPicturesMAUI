@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Reflection.Metadata;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
@@ -84,9 +85,33 @@ namespace ExportPictures
             DisplayAlert("Informação", rowsAffected + " registro(s) foram inseridos no Banco de Dados", "OK");
         }
 
+        private List<Produto> GetProducts(String filter)
+        {
+            List<Produto> productList = new List<Produto>();
+
+            String query = "SELECT * FROM `commercedb`.`produto`";
+            if (!String.IsNullOrEmpty(filter)) query += " WHERE " + filter;
+            MySqlCommand command = new MySqlCommand(query, this.mySqlConnection);
+            MySqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                Produto product = new Produto();
+                product.nome      = (String)dataReader["nome"];
+                product.descricao = (String)dataReader["descricao"];
+                product.preco     = (Decimal)dataReader["preco"];
+                product.foto      = dataReader["foto"] is DBNull ? "" : (String)dataReader["foto"];
+                product.formatoImagem = dataReader["formatoImagem"] is DBNull ? "" : (String)dataReader["formatoImagem"];
+
+                productList.Add(product);
+            }
+            dataReader.Close();
+
+            return productList;
+        }
+
         private void OnRetrieveClick(object? sender, EventArgs e)
         {
-            List<Produto> productList = new List<Produto> { new Produto() };     // GetProducts("");
+            List<Produto> productList = GetProducts("");
             foreach (Produto product in productList)
             {
                 if (String.IsNullOrEmpty(product.formatoImagem)) continue; // skip this one
