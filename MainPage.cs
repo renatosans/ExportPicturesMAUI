@@ -111,21 +111,22 @@ namespace ExportPictures
 
         private void OnRetrieveClick(object? sender, EventArgs e)
         {
+            String outputDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
+
             List<Produto> productList = GetProducts("");
             foreach (Produto product in productList)
             {
                 if (String.IsNullOrEmpty(product.formatoImagem)) continue; // skip this one
 
-                String filename = product.nome + '.' + product.formatoImagem;
+                String filename = product.nome + '.' + product.formatoImagem.Replace(@"image/", "").Replace(@";base64", "");
                 // Char[] blobContents = Encoding.UTF8.GetChars(document.arquivo);
                 // Byte[] fileContents = Convert.FromBase64CharArray(blobContents, 0, blobContents.Length);
                 Byte[] fileContents = Convert.FromBase64String(product.foto);
-                FileStream fileStream = new FileStream(filename, FileMode.CreateNew);
+                FileStream fileStream = new FileStream(outputDir + filename, FileMode.CreateNew);
                 fileStream.Write(fileContents, 0, fileContents.Length);
                 fileStream.Flush();
             }
-
-            String outputDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + " ou " + Directory.GetCurrentDirectory();
+ 
             DisplayAlert("Informação", "Arquivos salvos no diretório " + outputDir, "OK");
         }
     }
