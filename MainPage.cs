@@ -67,18 +67,21 @@ namespace ExportPictures
 
         // Para fazer o upload para o banco de dados é necessário aumentar o tamanho do packet no MySQL
         // SET GLOBAL max_allowed_packet = 850741824
-        private void OnInsertClick(object? sender, EventArgs e)
+        private async void OnInsertClick(object? sender, EventArgs e)
         {
-            /*
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            if (fileDialog.ShowDialog() != DialogResult.OK) return;
-            */
+            var fileResult = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Pick Image Please",
+                FileTypes = FilePickerFileType.Images
+            });
 
-            String filename = "1";   // Path.GetFileNameWithoutExtension(fileDialog.FileName);
-            Byte[] fileContents = new Byte[] {}; // File.ReadAllBytes(fileDialog.FileName);
-            String extension = "jpg"; // Path.GetExtension(fileDialog.FileName); extension = extension.Trim('.');
+            if (fileResult == null) return;
 
-            String query = "UPDATE `commercedb`.`produto` SET `foto` = '" + Convert.ToBase64String(fileContents) + "', `formatoImagem` = 'image/" + extension + ";base64' WHERE id=" + filename;
+            String filename = Path.GetFileNameWithoutExtension(fileResult.FileName);
+            Byte[] fileContents = File.ReadAllBytes(fileResult.FullPath);
+            String extension = Path.GetExtension(fileResult.FileName); extension = extension.Trim('.');
+
+            String query = "INSERT INTO `commercedb`.`produto`(nome, preco, foto, formatoImagem) VALUES('" + filename + "', 1.99, '" + Convert.ToBase64String(fileContents) + "', 'image/" + extension + ";base64')";
             MySqlCommand command = new MySqlCommand(query, mySqlConnection);
             int rowsAffected = command.ExecuteNonQuery();
 
