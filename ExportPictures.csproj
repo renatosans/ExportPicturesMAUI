@@ -41,14 +41,14 @@
 
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" Color="#512BD4"/>
+        <MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" Color="#512BD4" />
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\splash.svg" Color="#512BD4" BaseSize="128,128"/>
+        <MauiSplashScreen Include="Resources\splash.svg" Color="#512BD4" BaseSize="128,128" />
         <!-- Images -->
-        <MauiImage Include="Resources\Images\*"/>
+        <MauiImage Include="Resources\Images\*" />
         <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
         <!-- Custom Fonts -->
-        <MauiFont Include="Resources\Fonts\*"/>
+        <MauiFont Include="Resources\Fonts\*" />
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
@@ -59,8 +59,14 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-        <PackageReference Include="CommunityToolkit.Maui.Markup" Version="2.1.0"/>
-        <PackageReference Include="VijayAnand.MauiToolkit" Version="2.0.1"/>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0"/>
+        <PackageReference Include="CommunityToolkit.Maui.Markup" Version="2.1.0" />
+        <PackageReference Include="VijayAnand.MauiToolkit" Version="2.0.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MySql.Data">
+        <HintPath>..\..\..\Program Files (x86)\MySQL\MySQL Connector Net 8.0.27\Assemblies\net5.0\MySql.Data.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

@@ -1,4 +1,8 @@
-﻿namespace ExportPictures
+﻿using MySql.Data;
+using MySql.Data.MySqlClient;
+
+
+namespace ExportPictures
 {
     public partial class MainPage : ContentPage
     {
@@ -53,9 +57,24 @@
             };
         }
 
+        // Para fazer o upload para o banco de dados é necessário aumentar o tamanho do packet no MySQL
+        // SET GLOBAL max_allowed_packet = 850741824
         private void OnInsertClick(object? sender, EventArgs e)
         {
-            DisplayAlert("Alert", "Insert", "OK");
+            /*
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() != DialogResult.OK) return;
+
+            String filename = Path.GetFileNameWithoutExtension(fileDialog.FileName);
+            Byte[] fileContents = File.ReadAllBytes(fileDialog.FileName);
+            String extension = Path.GetExtension(fileDialog.FileName); extension = extension.Trim('.');
+
+            String query = "UPDATE `commercedb`.`produto` SET `foto` = '" + Convert.ToBase64String(fileContents) + "', `formatoImagem` = 'image/" + extension + ";base64' WHERE id=" + filename;
+            MySqlCommand command = new MySqlCommand(query, mySqlConnection);
+            */
+            int rowsAffected = 0;  // command.ExecuteNonQuery();
+
+            DisplayAlert("Informação", rowsAffected + " registro(s) foram inseridos no Banco de Dados", "OK");
         }
 
         private void OnRetrieveClick(object? sender, EventArgs e)
