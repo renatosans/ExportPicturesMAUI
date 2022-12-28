@@ -1,4 +1,5 @@
-﻿using MySql.Data;
+﻿using System.Reflection;
+using MySql.Data;
 using MySql.Data.MySqlClient;
 
 
@@ -85,7 +86,22 @@ namespace ExportPictures
 
         private void OnRetrieveClick(object? sender, EventArgs e)
         {
-            DisplayAlert("Alert", "Retrieve", "OK");
+            List<Produto> productList = new List<Produto> { new Produto() };     // GetProducts("");
+            foreach (Produto product in productList)
+            {
+                if (String.IsNullOrEmpty(product.formatoImagem)) continue; // skip this one
+
+                String filename = product.nome + '.' + product.formatoImagem;
+                // Char[] blobContents = Encoding.UTF8.GetChars(document.arquivo);
+                // Byte[] fileContents = Convert.FromBase64CharArray(blobContents, 0, blobContents.Length);
+                Byte[] fileContents = Convert.FromBase64String(product.foto);
+                FileStream fileStream = new FileStream(filename, FileMode.CreateNew);
+                fileStream.Write(fileContents, 0, fileContents.Length);
+                fileStream.Flush();
+            }
+
+            String outputDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + " ou " + Directory.GetCurrentDirectory();
+            DisplayAlert("Informação", "Arquivos salvos no diretório " + outputDir, "OK");
         }
     }
 }
