@@ -6,12 +6,18 @@ namespace ExportPictures
 {
     public partial class MainPage : ContentPage
     {
+        MySqlConnection mySqlConnection;
+
         Label title;
         Button insert;
         Button retrieve;
 
         public MainPage()
         {
+            // TODO: Retirar usuário e senha hardcoded no aplicativo
+            mySqlConnection = new MySqlConnection("server=localhost; user id=root; password=p@ssw0rd;");
+            mySqlConnection.Open();
+
             title = new Label()
             {
                 Style = AppResource<Style>("MauiLabel"),
@@ -64,15 +70,15 @@ namespace ExportPictures
             /*
             OpenFileDialog fileDialog = new OpenFileDialog();
             if (fileDialog.ShowDialog() != DialogResult.OK) return;
+            */
 
-            String filename = Path.GetFileNameWithoutExtension(fileDialog.FileName);
-            Byte[] fileContents = File.ReadAllBytes(fileDialog.FileName);
-            String extension = Path.GetExtension(fileDialog.FileName); extension = extension.Trim('.');
+            String filename = "1";   // Path.GetFileNameWithoutExtension(fileDialog.FileName);
+            Byte[] fileContents = new Byte[] {}; // File.ReadAllBytes(fileDialog.FileName);
+            String extension = "jpg"; // Path.GetExtension(fileDialog.FileName); extension = extension.Trim('.');
 
             String query = "UPDATE `commercedb`.`produto` SET `foto` = '" + Convert.ToBase64String(fileContents) + "', `formatoImagem` = 'image/" + extension + ";base64' WHERE id=" + filename;
             MySqlCommand command = new MySqlCommand(query, mySqlConnection);
-            */
-            int rowsAffected = 0;  // command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
 
             DisplayAlert("Informação", rowsAffected + " registro(s) foram inseridos no Banco de Dados", "OK");
         }
