@@ -23,7 +23,7 @@ namespace ExportPictures
             title = new Label()
             {
                 Style = AppResource<Style>("MauiLabel"),
-                Text = "Welcome to .NET Multi-platform App UI",
+                Text = "Export Pictures (.NET MAUI)",
             }.FontSize(18).CenterHorizontal().SemanticDesc("Welcome to dot net Multi platform App U I").SemanticHeading(SemanticHeadingLevel.Level1);
             insert = new Button()
             {
@@ -100,7 +100,7 @@ namespace ExportPictures
             {
                 Produto product = new Produto();
                 product.nome      = (String)dataReader["nome"];
-                product.descricao = (String)dataReader["descricao"];
+                product.descricao = dataReader["descricao"] is DBNull ? "" : (String)dataReader["descricao"];
                 product.preco     = (Decimal)dataReader["preco"];
                 product.foto      = dataReader["foto"] is DBNull ? "" : (String)dataReader["foto"];
                 product.formatoImagem = dataReader["formatoImagem"] is DBNull ? "" : (String)dataReader["formatoImagem"];
