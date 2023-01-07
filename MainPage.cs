@@ -114,22 +114,43 @@ namespace ExportPictures
 
         private void OnRetrieveClick(object? sender, EventArgs e)
         {
+            List<Produto> productList = new List<Produto>() { };
             String outputDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
+            try
+            {
+                productList = GetProducts("");
+            }
+            catch (Exception error)
+            {
+                DisplayAlert("Erro", error.Message, "OK");
+            }
 
-            List<Produto> productList = GetProducts("");
+            int filesWritten = 0;
             foreach (Produto product in productList)
             {
-                if (String.IsNullOrEmpty(product.formatoImagem)) continue; // skip this one
-
                 String filename = product.nome + '.' + product.formatoImagem.Replace(@"image/", "").Replace(@";base64", "");
+
+                if (String.IsNullOrEmpty(product.formatoImagem)) continue; // skip this one
+                if (File.Exists(outputDir + filename))
+                {
+                    DisplayAlert("Informação", "O arquivo " + filename + " já existe", "OK");
+                    continue; // skip this one
+                }
+
                 // Char[] blobContents = Encoding.UTF8.GetChars(document.arquivo);
                 // Byte[] fileContents = Convert.FromBase64CharArray(blobContents, 0, blobContents.Length);
                 Byte[] fileContents = Convert.FromBase64String(product.foto);
                 FileStream fileStream = new FileStream(outputDir + filename, FileMode.CreateNew);
                 fileStream.Write(fileContents, 0, fileContents.Length);
                 fileStream.Flush();
+                filesWritten++;
             }
  
+            if (filesWritten == 0)
+            {
+                DisplayAlert("Informação", "Nenhum arquivo gravado em disco ", "OK");
+                return;
+            }
             DisplayAlert("Informação", "Arquivos salvos no diretório " + outputDir, "OK");
         }
     }
