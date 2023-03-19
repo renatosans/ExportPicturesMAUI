@@ -115,7 +115,9 @@ namespace ExportPictures
         private void OnRetrieveClick(object? sender, EventArgs e)
         {
             List<Produto> productList = new List<Produto>() { };
-            String outputDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
+
+            String outputDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\img\";
+            Directory.CreateDirectory(outputDir);
             try
             {
                 productList = GetProducts("");
