@@ -58,8 +58,8 @@ namespace ExportPictures
                         }.CenterHorizontal(),
                         new Image()
                         {
-                            Source = "dotnet_bot.png",
-                        }.Height(310).Width(250).CenterHorizontal().SemanticDesc("Cute dot net bot waving hi to you!"),
+                            Source = "catalogo_produtos.png",
+                        }.Height(400).Width(600).CenterHorizontal().SemanticDesc("Catalogo"),
                     }
                 }.Padding(30)
             };
