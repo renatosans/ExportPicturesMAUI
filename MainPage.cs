@@ -83,7 +83,15 @@ namespace ExportPictures
 
             String query = "INSERT INTO `commercedb`.`produto`(nome, preco, foto, formatoImagem) VALUES('" + filename + "', 1.99, '" + Convert.ToBase64String(fileContents) + "', 'image/" + extension + ";base64')";
             MySqlCommand command = new MySqlCommand(query, mySqlConnection);
-            int rowsAffected = command.ExecuteNonQuery();
+            int rowsAffected = 0;
+            try
+            {
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception error)
+            {
+                DisplayAlert("Erro", error.Message, "OK");
+            }
 
             DisplayAlert("Informação", rowsAffected + " registro(s) foram inseridos no Banco de Dados", "OK");
         }
